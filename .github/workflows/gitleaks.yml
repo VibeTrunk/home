@@ -22,4 +22,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - run: gitleaks git -v --redact=50
+      - run: |
+          # actions/checkout runs on the host; gitleaks runs as a different
+          # UID inside its own container, so git refuses to touch a repo it
+          # doesn't own ("dubious ownership") unless told otherwise here.
+          # Without this, gitleaks logs the git error but still exits 0 and
+          # reports "no leaks found" after scanning 0 commits — a silent
+          # false pass, not a hard failure. Confirmed by planting a fake
+          # secret and watching this exact failure mode before adding the
+          # config line (see docs/decisions.md).
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          gitleaks git -v --redact=50
