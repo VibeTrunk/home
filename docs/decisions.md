@@ -108,6 +108,38 @@ destination is a weak first impression. Resolving it means either restyling
 the page to match the artwork or re-cutting the artwork to match the page;
 until then the mismatch is deliberate and recorded, not accidental.
 
+## Agent safety scaffolding
+
+Considered relying on prompt instructions alone, or a bare permissions
+allow-list with no enforcement.
+
+Chose defense-in-depth: an allow-list (`.claude/settings.json`,
+`.codex/rules/project.rules`) for routine reversible commands, plus a
+`PreToolUse` hook (`.claude/hooks/`, `.codex/hooks/`) that pattern-matches
+and denies destructive commands regardless of what the model decides. Prompt
+instructions can be argued around by content an agent reads (a malicious
+file, a misleading commit message); a hook running outside the model's
+context cannot.
+
+The hook logic is duplicated between `.claude/` and `.codex/` rather than
+shared, because the two tools' hook runners don't load each other's config.
+`AGENTS.md` exists only to point Codex at `CLAUDE.md` as canonical project
+context, so the two docs don't drift into disagreeing descriptions of the
+same project.
+
+`gitleaks` runs in CI (push + PR) as an independent second layer: the hook
+blocks command *patterns*, not file *contents* — a secret typed directly
+into a file via an editor, never passed through a shell command, would pass
+the hook and needs a scanner that reads the diff instead.
+
+This whole structure — `.claude/`, `.codex/`, `AGENTS.md`, the gitleaks
+workflow, the `.env.example` pattern, `SECURITY.md` — is the template for
+every future VibeTrunk-org repo. The Hitster repo will need
+`supabase db push` / `supabase secrets set` guardrails added to the
+allow/deny lists, plus its own `.env.example`
+(`PUBLIC_SUPABASE_URL` / `PUBLIC_SUPABASE_ANON_KEY`; the `service_role` key
+never appears in any tracked file).
+
 ## Open items
 
 - **No sitemap.** `@astrojs/sitemap` is not worth a dependency for one indexed
