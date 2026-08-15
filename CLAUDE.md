@@ -35,3 +35,12 @@ AGENTS.md for the Codex-specific summary, and .claude/settings.json /
 (.claude/, .codex/, AGENTS.md, gitleaks CI) is the template for every
 VibeTrunk-org repo — new repos should copy it and adapt only the
 stack-specific command lists.
+
+A second PreToolUse hook (`block-young-packages.cjs`, mirrored in
+`.claude/hooks/` and `.codex/hooks/`) blocks `npm install`/`npm i` of any
+package version published less than 14 days ago, checked live against the
+npm registry. Freshly published versions are a common supply-chain attack
+vector (typosquats, compromised maintainer accounts); the cool-off gives
+registry security teams time to catch and pull malicious releases before
+this project depends on them. It fails open (allows the install) if the
+registry is unreachable or the version can't be resolved unambiguously.

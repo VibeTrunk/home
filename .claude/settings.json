@@ -74,6 +74,13 @@
             "args": [".claude/hooks/block-dangerous-commands.cjs"],
             "timeout": 10,
             "statusMessage": "Safety check"
+          },
+          {
+            "type": "command",
+            "command": "node",
+            "args": [".claude/hooks/block-young-packages.cjs"],
+            "timeout": 15,
+            "statusMessage": "Package age check"
           }
         ]
       }
