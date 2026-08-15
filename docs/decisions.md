@@ -144,6 +144,17 @@ with "missing gitleaks license," because that wrapper now requires a paid
 stays free regardless of org/private status; only Gitleaks Inc.'s
 value-added Action wrapper is gated.
 
+Verified the workflow actually catches a real secret, not just that it runs:
+planted a fake token on a disposable branch/PR and watched it pass clean —
+`gitleaks git` failed with "detected dubious ownership in repository" (the
+checkout step and the gitleaks container run as different UIDs) but treated
+that as a warning, not a fatal error, and reported "no leaks found" after
+scanning 0 commits. A silent false pass is worse than no scanner at all,
+since it looks like protection without providing any. Fixed by running
+`git config --global --add safe.directory "$GITHUB_WORKSPACE"` before the
+scan; re-verified with the same planted secret and confirmed a real failure
+(`RuleID: generic-api-key`, exit code 1) before merging the fix.
+
 This whole structure — `.claude/`, `.codex/`, `AGENTS.md`, the gitleaks
 workflow, the `.env.example` pattern, `SECURITY.md` — is the template for
 every future VibeTrunk-org repo. The Hitster repo will need
