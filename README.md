@@ -46,17 +46,15 @@ Requires Node >= 22.12.
 
 ## Deployment
 
-Vercel, from this repo, mapped to the apex domain. Vercel auto-detects Astro
-(build `astro build`, output `dist/`); [`vercel.json`](vercel.json) only adds
-response headers.
-
-DNS lives at Porkbun and is not pointed at Vercel yet — see
-[`docs/decisions.md`](docs/decisions.md#deployment).
+Live at [vibetrunk.com](https://vibetrunk.com), on Vercel's Hobby plan under
+the `VibeTrunk` team, mapped to the apex domain (`www` redirects to it). Vercel
+auto-detects Astro (build `astro build`, output `dist/`);
+[`vercel.json`](vercel.json) only adds response headers. DNS is hosted at
+Porkbun — see [`docs/decisions.md`](docs/decisions.md#deployment) for the
+record values and a note on the Vercel web import wizard misbehaving during
+setup.
 
 ## Known gaps
 
-- The social preview art (`public/og.png`) uses a purple/teal arcade palette
-  that the page itself does not share. See
-  [`docs/decisions.md`](docs/decisions.md#social-preview-image).
 - The CSP sends `script-src 'none'`. Enabling Vercel Web Analytics or Speed
   Insights later means loosening that line.

@@ -1,0 +1,101 @@
+---
+// Decorative — three fanned luggage tags echoing the OG image. No props: the
+// tag labels are fixed set dressing, not content, so there is nothing here
+// for a caller to configure.
+---
+
+<div class="hero-art" aria-hidden="true">
+  <div class="tag tag--a">
+    <span class="tag__flap" style="background: var(--yellow)">NEXTGME</span>
+    <div class="tag__lines"><span></span><span></span><span></span></div>
+  </div>
+  <div class="tag tag--b">
+    <span class="tag__flap" style="background: var(--cyan)">SIDEQST</span>
+    <div class="tag__lines"><span></span><span></span><span></span></div>
+  </div>
+  <div class="tag tag--c">
+    <span class="tag__flap" style="background: var(--orange)">VIBETRNK</span>
+    <div class="tag__lines"><span></span><span></span><span></span></div>
+  </div>
+</div>
+
+<style>
+  .hero-art {
+    position: relative;
+    height: 15rem;
+    justify-self: center;
+  }
+
+  @media (max-width: 46rem) {
+    .hero-art {
+      height: 12.5rem;
+      width: 100%;
+      max-width: 20rem;
+      margin: 0.5rem auto 0;
+    }
+  }
+
+  .tag {
+    position: absolute;
+    top: 1.5rem;
+    width: 9rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--card);
+    box-shadow: 6px 6px 0 var(--ink-deep);
+  }
+
+  .tag--a {
+    left: 0;
+    transform: rotate(-9deg);
+    z-index: 1;
+  }
+
+  .tag--b {
+    left: 3.6rem;
+    top: 0.75rem;
+    transform: rotate(-1deg);
+    z-index: 2;
+  }
+
+  .tag--c {
+    left: 7.2rem;
+    top: 2.1rem;
+    transform: rotate(8deg);
+    z-index: 3;
+  }
+
+  .tag__flap {
+    display: block;
+    padding: 0.45rem 0.6rem;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    border-radius: 9px 9px 0 0;
+  }
+
+  .tag__lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.85rem 0.7rem 1rem;
+  }
+
+  .tag__lines span {
+    display: block;
+    height: 2px;
+    background: var(--line);
+  }
+
+  .tag__lines span:nth-child(1) {
+    width: 90%;
+  }
+  .tag__lines span:nth-child(2) {
+    width: 65%;
+  }
+  .tag__lines span:nth-child(3) {
+    width: 78%;
+  }
+</style>

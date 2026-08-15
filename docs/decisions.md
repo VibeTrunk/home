@@ -105,12 +105,8 @@ makes the 1200×630 render as a wide banner instead of a small square thumbnail.
 Explicit `og:image:width` / `og:image:height` let a scraper lay out the card
 before it has finished downloading the image.
 
-**Open:** the artwork's palette — deep purple, teal, orange, yellow, glitched
-mono wordmark — is not the page's palette, which is a single amber accent on
-near-black or off-white. A link preview that looks unrelated to its
-destination is a weak first impression. Resolving it means either restyling
-the page to match the artwork or re-cutting the artwork to match the page;
-until then the mismatch is deliberate and recorded, not accidental.
+**Resolved** by the redesign below: the page was restyled to match the
+artwork rather than re-cutting the artwork to match the page.
 
 ## Agent safety scaffolding
 
@@ -170,6 +166,53 @@ every future VibeTrunk-org repo. The Hitster repo will need
 allow/deny lists, plus its own `.env.example`
 (`PUBLIC_SUPABASE_URL` / `PUBLIC_SUPABASE_ANON_KEY`; the `service_role` key
 never appears in any tracked file).
+
+## Redesign: single dark world, sourced from the OG artwork
+
+Restyled the page to match `public/og.png` instead of re-cutting the
+artwork, closing the palette mismatch recorded above. Considered a muted
+"daylight" variant of the same tokens so `prefers-color-scheme: light` still
+had something to show; rejected it because the source artwork has no light
+mode — it's a terminal in a trunk, and a terminal doesn't get a daylight
+skin. This **supersedes** "Styling: tokens, two schemes" above: `global.css`
+now defines one committed palette on bare `:root` with no
+`prefers-color-scheme` branch, `color-scheme: dark`, and the browser chrome
+follows via a single `theme-color` meta in `Base.astro`.
+
+Token names changed shape, not just value, to match what they now represent:
+`--bg`/`--surface`/`--fg`/`--fg-muted`/`--border`/`--accent` became
+`--ink`/`--card`/`--paper`/`--mist`/`--line` plus three named accents
+(`--cyan`, `--orange`, `--yellow` — the three tag colors in the artwork)
+rather than one. `--radius` and `--transition` kept their names; only their
+values changed, so nothing downstream had to know the palette shifted.
+
+Typography stays system fonts — no new dependency, no font hosting, keeping
+the zero-JS/no-CDN posture already established for the CSP. The artwork's
+chunky offset-shadow wordmark is reproduced with a heavy system stack
+(`--font-display`, an `Arial Black`/`Helvetica Neue` fallback chain) plus a
+layered `text-shadow` (cyan then orange, offset a few px), not a custom
+typeface. Used only on the wordmark and the 404 code, not page body text —
+the effect is loud enough that it doesn't need to repeat to register.
+
+Tool cards became the artwork's luggage-tag object: a colored flap, a
+tilted rotation that straightens on hover, and decorative "stub" lines at
+the bottom. Flap color now carries status: live tools cycle through
+`cyan → orange → yellow` in ship order (`liveAccents` in `index.astro`), and
+coming-soon tools always get a muted tab, so saturation itself signals
+"shipped" without a separate legend. The rotation is computed from each
+card's `index` prop rather than a CSS sibling selector on the parent's
+`<li>`, because Astro scopes each component's `<style>` block separately —
+a selector written in `ToolCard.astro` can't reach an element only
+`index.astro` renders.
+
+`public/favicon.svg` — an existing trunk-shaped mark — was recolored to the
+new palette (cyan on ink) rather than redrawn; the shape already fit the
+brand, only the old amber-on-near-black colors didn't.
+
+No new dependencies, no new build step, no CSP change: still zero
+client-side JavaScript, including the blinking terminal cursor (a CSS
+`steps()` animation, covered by the existing
+`prefers-reduced-motion` rule in `global.css`).
 
 ## Open items
 

@@ -3,9 +3,13 @@ import type { Tool } from '../data/tools';
 
 interface Props {
   tool: Tool;
+  /** 1-based position in the trunk, shown as the card's catalog number. */
+  index: number;
+  /** Which of the three tag colors a live tool gets. Ignored when coming soon. */
+  accent?: 'cyan' | 'orange' | 'yellow';
 }
 
-const { tool } = Astro.props;
+const { tool, index, accent = 'cyan' } = Astro.props;
 
 // Narrowing on `status` (not on a boolean alias) is what lets TypeScript
 // see that `url` exists here.
@@ -14,83 +18,143 @@ const href = tool.status === 'live' ? tool.url : undefined;
 // A card that goes nowhere should not be a link, so the tag itself changes.
 const Tag = href ? 'a' : 'div';
 const statusLabel = tool.status === 'live' ? 'Live' : 'Soon';
+const cardNumber = `№${String(index).padStart(2, '0')}`;
+// Custom properties on the card root, not the flap: hover reads --accent
+// too, so the flap color and the hover-shadow color always match without
+// repeating the accent name in two places. --tilt is derived from `index`
+// rather than a sibling CSS selector, since Astro scopes this component's
+// styles separately from the <li> the caller wraps it in.
+const tilt = index % 2 === 0 ? '0.9deg' : '-1.1deg';
+const rootStyle = [
+  `--tilt: ${tilt}`,
+  tool.status === 'live' && `--accent: var(--${accent})`,
+]
+  .filter(Boolean)
+  .join('; ');
 ---
 
-<Tag class:list={['card', `card--${tool.status}`]} href={href}>
-  <span class="card__status">{statusLabel}</span>
-  <h3 class="card__name">{tool.name}</h3>
-  <p class="card__blurb">{tool.blurb}</p>
+<Tag class:list={['tool-card', `tool-card--${tool.status}`]} href={href} style={rootStyle}>
+  <span class="card__flap">
+    <span>{statusLabel}</span>
+    <span class="card__index">{cardNumber}</span>
+  </span>
+  <div class="card__body">
+    <h3 class="card__name">{tool.name}</h3>
+    <p class="card__blurb">{tool.blurb}</p>
+  </div>
   {href && <span class="card__arrow" aria-hidden="true">&rarr;</span>}
+  <div class="card__stub" aria-hidden="true"><span></span><span></span><span></span></div>
 </Tag>
 
 <style>
-  .card {
+  .tool-card {
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    padding: 1.25rem 1.25rem 1.5rem;
-    border: 1px solid var(--border);
+    background-color: var(--card);
+    border: 1px solid var(--line);
     border-radius: var(--radius);
-    background-color: var(--surface);
     text-decoration: none;
     color: inherit;
+    transform: rotate(var(--tilt));
+    box-shadow: 5px 5px 0 var(--ink-deep);
     transition:
-      border-color var(--transition),
-      background-color var(--transition),
-      transform var(--transition);
+      transform var(--transition),
+      box-shadow var(--transition);
   }
 
-  a.card:hover,
-  a.card:focus-visible {
-    border-color: var(--accent);
-    background-color: var(--surface-hover);
-    transform: translateY(-2px);
+  a.tool-card:hover,
+  a.tool-card:focus-visible {
+    transform: rotate(0deg) translateY(-4px);
+    box-shadow: 7px 7px 0 var(--accent, var(--cyan));
   }
 
-  a.card:hover .card__arrow,
-  a.card:focus-visible .card__arrow {
-    transform: translateX(3px);
-    color: var(--accent);
+  .tool-card--soon {
+    border-style: dashed;
   }
 
-  .card--coming-soon {
-    background-color: transparent;
-  }
-
-  .card__status {
+  .card__flap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.85rem;
+    border-radius: 11px 11px 0 0;
+    background: var(--accent, var(--tab-muted));
+    color: var(--ink);
     font-family: var(--font-mono);
+    font-weight: 700;
     font-size: 0.6875rem;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--accent);
   }
 
-  .card--coming-soon .card__status {
-    color: var(--fg-muted);
+  .tool-card--soon .card__flap {
+    color: var(--paper);
+  }
+
+  .card__index {
+    opacity: 0.6;
+    font-weight: 400;
+  }
+
+  .card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1rem 1rem 0.5rem;
   }
 
   .card__name {
     margin: 0;
     font-size: 1.0625rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: -0.01em;
+    color: var(--paper);
   }
 
   .card__blurb {
     margin: 0;
     font-size: 0.9375rem;
     line-height: 1.5;
-    color: var(--fg-muted);
+    color: var(--mist);
     text-wrap: pretty;
   }
 
   .card__arrow {
+    align-self: flex-end;
     margin-top: 0.25rem;
+    padding: 0 1rem;
     font-size: 0.9375rem;
-    color: var(--fg-muted);
-    transition:
-      transform var(--transition),
-      color var(--transition);
+    color: var(--cyan);
+    transition: transform var(--transition);
+  }
+
+  a.tool-card:hover .card__arrow,
+  a.tool-card:focus-visible .card__arrow {
+    transform: translateX(3px);
+  }
+
+  .card__stub {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.75rem 1rem 1rem;
+    margin-top: auto;
+  }
+
+  .card__stub span {
+    display: block;
+    height: 2px;
+    background: var(--line);
+  }
+
+  .card__stub span:nth-child(1) {
+    width: 100%;
+  }
+  .card__stub span:nth-child(2) {
+    width: 72%;
+  }
+  .card__stub span:nth-child(3) {
+    width: 86%;
   }
 </style>

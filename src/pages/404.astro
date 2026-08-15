@@ -7,10 +7,10 @@ import Base from '../layouts/Base.astro';
   description="That page is not in the trunk."
 >
   <main class="page">
-    <p class="wordmark">VibeTrunk</p>
-    <h1>Not in the trunk.</h1>
-    <p class="lede">That page does not exist — or has not been built yet.</p>
-    <a class="back" href="/">&larr; Back to the trunk</a>
+    <p class="kicker">&gt; find /trunk -name "this-page"_</p>
+    <h1 class="wordmark">404</h1>
+    <p class="lede">Not in the trunk — that page does not exist, or has not been built yet.</p>
+    <a class="back" href="/"><span aria-hidden="true">&larr;</span> Back to the trunk</a>
   </main>
 </Base>
 
@@ -21,35 +21,54 @@ import Base from '../layouts/Base.astro';
     padding: clamp(4rem, 15vw, 8rem) clamp(1.25rem, 5vw, 2.5rem) 3rem;
   }
 
-  .wordmark {
-    margin: 0 0 1.75rem;
+  .kicker {
+    margin: 0 0 1.25rem;
     font-family: var(--font-mono);
     font-size: 0.8125rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--accent);
+    letter-spacing: 0.04em;
+    color: var(--mist-dim);
   }
 
-  h1 {
+  .wordmark {
     margin: 0;
-    font-size: clamp(1.75rem, 5vw, 2.25rem);
-    font-weight: 600;
-    letter-spacing: -0.025em;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(3rem, 12vw, 4.5rem);
+    letter-spacing: -0.02em;
+    color: var(--paper);
+    text-shadow:
+      3px 3px 0 var(--cyan),
+      6px 6px 0 var(--orange);
   }
 
   .lede {
-    margin: 1rem 0 2rem;
-    color: var(--fg-muted);
+    margin: 1.25rem 0 2rem;
+    color: var(--mist);
   }
 
   .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     font-family: var(--font-mono);
     font-size: 0.8125rem;
-    color: var(--accent);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--cyan);
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
     text-decoration: none;
+    box-shadow: 4px 4px 0 var(--ink-deep);
+    transition:
+      transform var(--transition),
+      box-shadow var(--transition);
   }
 
-  .back:hover {
-    text-decoration: underline;
+  .back:hover,
+  .back:focus-visible {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--ink-deep);
   }
 </style>
