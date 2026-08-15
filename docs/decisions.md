@@ -155,6 +155,14 @@ since it looks like protection without providing any. Fixed by running
 scan; re-verified with the same planted secret and confirmed a real failure
 (`RuleID: generic-api-key`, exit code 1) before merging the fix.
 
+**Sharp edge worth knowing:** `gitleaks git` scans every branch fetched by
+`actions/checkout` (`fetch-depth: 0` pulls all of `refs/heads/*`), not just
+the ref being built. While the disposable test branch above still existed
+on the remote, it failed the *next* unrelated push to `main` too — a secret
+sitting on any pushed branch, even an abandoned WIP one, breaks CI
+everywhere until that branch is deleted. Delete branches promptly once
+they're no longer needed, rather than leaving them stale on the remote.
+
 This whole structure — `.claude/`, `.codex/`, `AGENTS.md`, the gitleaks
 workflow, the `.env.example` pattern, `SECURITY.md` — is the template for
 every future VibeTrunk-org repo. The Hitster repo will need
