@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="VibeTrunk">
+  <rect width="32" height="32" rx="7" fill="#f0a04b" />
+  <path
+    d="M8 13a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V13Z"
+    fill="#100f0d"
+  />
+  <rect x="8" y="15.5" width="16" height="2" fill="#f0a04b" />
+  <rect x="13.75" y="13.75" width="4.5" height="5.5" rx="1.25" fill="#f0a04b" />
+</svg>

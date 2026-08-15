@@ -1,0 +1,96 @@
+---
+import type { Tool } from '../data/tools';
+
+interface Props {
+  tool: Tool;
+}
+
+const { tool } = Astro.props;
+
+// Narrowing on `status` (not on a boolean alias) is what lets TypeScript
+// see that `url` exists here.
+const href = tool.status === 'live' ? tool.url : undefined;
+
+// A card that goes nowhere should not be a link, so the tag itself changes.
+const Tag = href ? 'a' : 'div';
+const statusLabel = tool.status === 'live' ? 'Live' : 'Soon';
+---
+
+<Tag class:list={['card', `card--${tool.status}`]} href={href}>
+  <span class="card__status">{statusLabel}</span>
+  <h3 class="card__name">{tool.name}</h3>
+  <p class="card__blurb">{tool.blurb}</p>
+  {href && <span class="card__arrow" aria-hidden="true">&rarr;</span>}
+</Tag>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.25rem 1.25rem 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: var(--surface);
+    text-decoration: none;
+    color: inherit;
+    transition:
+      border-color var(--transition),
+      background-color var(--transition),
+      transform var(--transition);
+  }
+
+  a.card:hover,
+  a.card:focus-visible {
+    border-color: var(--accent);
+    background-color: var(--surface-hover);
+    transform: translateY(-2px);
+  }
+
+  a.card:hover .card__arrow,
+  a.card:focus-visible .card__arrow {
+    transform: translateX(3px);
+    color: var(--accent);
+  }
+
+  .card--coming-soon {
+    background-color: transparent;
+  }
+
+  .card__status {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .card--coming-soon .card__status {
+    color: var(--fg-muted);
+  }
+
+  .card__name {
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card__blurb {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--fg-muted);
+    text-wrap: pretty;
+  }
+
+  .card__arrow {
+    margin-top: 0.25rem;
+    font-size: 0.9375rem;
+    color: var(--fg-muted);
+    transition:
+      transform var(--transition),
+      color var(--transition);
+  }
+</style>

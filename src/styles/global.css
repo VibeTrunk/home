@@ -1,0 +1,75 @@
+/*
+ * Design tokens and element defaults.
+ *
+ * Light is the base palette; the dark overrides only redefine tokens, so
+ * every component below reads from the same names in either scheme.
+ */
+
+:root {
+  --bg: #fbfaf8;
+  --surface: #ffffff;
+  --surface-hover: #fffdf7;
+  --fg: #1c1a17;
+  --fg-muted: #6b6560;
+  --border: #e4dfd6;
+  --accent: #b45309;
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
+    'Liberation Mono', monospace;
+
+  --radius: 10px;
+  --transition: 140ms ease;
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #100f0d;
+    --surface: #171613;
+    --surface-hover: #1b1916;
+    --fg: #eceae5;
+    --fg-muted: #9a938a;
+    --border: #2c2924;
+    --accent: #f0a04b;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

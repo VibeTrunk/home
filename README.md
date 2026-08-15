@@ -1,2 +1,62 @@
-# home
-Home repository
+# VibeTrunk — home
+
+The landing page for [vibetrunk.com](https://vibetrunk.com): one static page that
+lists every VibeTrunk tool as it ships.
+
+Each tool lives in its own repo and its own Vercel project on a subdomain
+(`hitster.vibetrunk.com`, and so on). This repo owns the root domain only, and
+knows nothing about the tools beyond their name, blurb, and URL.
+
+## Stack
+
+Astro 7, static output, no client-side JavaScript. The build emits plain HTML
+and one stylesheet per page.
+
+## Adding a tool
+
+Edit [`src/data/tools.ts`](src/data/tools.ts) — it is the only file that
+changes when something ships:
+
+```ts
+export const tools: Tool[] = [
+  {
+    name: 'Hitster for Philosophy',
+    blurb: 'Place famous quotes on a timeline before anyone else does.',
+    url: 'https://hitster.vibetrunk.com',
+    status: 'live',
+  },
+];
+```
+
+`status: 'live'` requires a `url`; the type will not compile without one. Live
+tools sort ahead of `coming-soon` ones automatically. Push to `main` and Vercel
+rebuilds.
+
+## Local development
+
+```sh
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # static output in dist/
+npm run preview  # serve the built output
+npm run check    # type-check .astro and .ts files
+```
+
+Requires Node >= 22.12.
+
+## Deployment
+
+Vercel, from this repo, mapped to the apex domain. Vercel auto-detects Astro
+(build `astro build`, output `dist/`); [`vercel.json`](vercel.json) only adds
+response headers.
+
+DNS lives at Porkbun and is not pointed at Vercel yet — see
+[`docs/decisions.md`](docs/decisions.md#deployment).
+
+## Known gaps
+
+- The social preview art (`public/og.png`) uses a purple/teal arcade palette
+  that the page itself does not share. See
+  [`docs/decisions.md`](docs/decisions.md#social-preview-image).
+- The CSP sends `script-src 'none'`. Enabling Vercel Web Analytics or Speed
+  Insights later means loosening that line.
