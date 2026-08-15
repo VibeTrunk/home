@@ -136,6 +136,14 @@ blocks command *patterns*, not file *contents* — a secret typed directly
 into a file via an editor, never passed through a shell command, would pass
 the hook and needs a scanner that reads the diff instead.
 
+The workflow runs the open-source gitleaks CLI directly via its official
+`ghcr.io/gitleaks/gitleaks` container image, not the `gitleaks-action`
+wrapper — first attempt used the wrapper and it failed the very first run
+with "missing gitleaks license," because that wrapper now requires a paid
+`GITLEAKS_LICENSE` for any org-owned repo, public or not. The underlying CLI
+stays free regardless of org/private status; only Gitleaks Inc.'s
+value-added Action wrapper is gated.
+
 This whole structure — `.claude/`, `.codex/`, `AGENTS.md`, the gitleaks
 workflow, the `.env.example` pattern, `SECURITY.md` — is the template for
 every future VibeTrunk-org repo. The Hitster repo will need

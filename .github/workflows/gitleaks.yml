@@ -1,5 +1,10 @@
 name: gitleaks
 
+# Runs the open-source gitleaks CLI directly via its official container image,
+# not the gitleaks-action wrapper — that wrapper now requires a paid
+# GITLEAKS_LICENSE for org-owned repos (even public ones). The CLI itself
+# stays free regardless of org/private status.
+
 on:
   push:
     branches: [main]
@@ -11,10 +16,10 @@ permissions:
 jobs:
   scan:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/gitleaks/gitleaks:latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: gitleaks git -v --redact=50
