@@ -6,15 +6,15 @@
 
 <div class="hero-art" aria-hidden="true">
   <div class="tag tag--a">
-    <span class="tag__flap" style="background: var(--yellow)">NEXTGME</span>
+    <span class="tag__flap tag__flap--yellow">NEXTGME</span>
     <div class="tag__lines"><span></span><span></span><span></span></div>
   </div>
   <div class="tag tag--b">
-    <span class="tag__flap" style="background: var(--cyan)">SIDEQST</span>
+    <span class="tag__flap tag__flap--cyan">SIDEQST</span>
     <div class="tag__lines"><span></span><span></span><span></span></div>
   </div>
   <div class="tag tag--c">
-    <span class="tag__flap" style="background: var(--orange)">VIBETRNK</span>
+    <span class="tag__flap tag__flap--orange">VIBETRNK</span>
     <div class="tag__lines"><span></span><span></span><span></span></div>
   </div>
 </div>
@@ -74,6 +74,21 @@
     letter-spacing: 0.04em;
     color: var(--ink);
     border-radius: 9px 9px 0 0;
+  }
+
+  /* Static color classes, not an inline `style` attribute: the CSP sends
+     style-src 'self' with no unsafe-inline, which silently drops inline
+     style="" backgrounds — see "Redesign" in docs/decisions.md. */
+  .tag__flap--yellow {
+    background: var(--yellow);
+  }
+
+  .tag__flap--cyan {
+    background: var(--cyan);
+  }
+
+  .tag__flap--orange {
+    background: var(--orange);
   }
 
   .tag__lines {

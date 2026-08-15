@@ -19,21 +19,16 @@ const href = tool.status === 'live' ? tool.url : undefined;
 const Tag = href ? 'a' : 'div';
 const statusLabel = tool.status === 'live' ? 'Live' : 'Soon';
 const cardNumber = `№${String(index).padStart(2, '0')}`;
-// Custom properties on the card root, not the flap: hover reads --accent
-// too, so the flap color and the hover-shadow color always match without
-// repeating the accent name in two places. --tilt is derived from `index`
-// rather than a sibling CSS selector, since Astro scopes this component's
-// styles separately from the <li> the caller wraps it in.
-const tilt = index % 2 === 0 ? '0.9deg' : '-1.1deg';
-const rootStyle = [
-  `--tilt: ${tilt}`,
-  tool.status === 'live' && `--accent: var(--${accent})`,
-]
-  .filter(Boolean)
-  .join('; ');
+// Static modifier classes, not an inline `style` attribute: the CSP sends
+// style-src 'self' with no unsafe-inline, which silently drops inline
+// style="" custom properties — see "Redesign" in docs/decisions.md. The
+// tilt class is derived from `index` rather than a sibling CSS selector on
+// the caller's <li>, since Astro scopes this component's styles separately.
+const tiltClass = index % 2 === 0 ? 'tool-card--tilt-b' : 'tool-card--tilt-a';
+const accentClass = tool.status === 'live' ? `tool-card--${accent}` : undefined;
 ---
 
-<Tag class:list={['tool-card', `tool-card--${tool.status}`]} href={href} style={rootStyle}>
+<Tag class:list={['tool-card', `tool-card--${tool.status}`, tiltClass, accentClass]} href={href}>
   <span class="card__flap">
     <span>{statusLabel}</span>
     <span class="card__index">{cardNumber}</span>
@@ -56,11 +51,30 @@ const rootStyle = [
     border-radius: var(--radius);
     text-decoration: none;
     color: inherit;
-    transform: rotate(var(--tilt));
     box-shadow: 5px 5px 0 var(--ink-deep);
     transition:
       transform var(--transition),
       box-shadow var(--transition);
+  }
+
+  .tool-card--tilt-a {
+    transform: rotate(-1.1deg);
+  }
+
+  .tool-card--tilt-b {
+    transform: rotate(0.9deg);
+  }
+
+  .tool-card--cyan {
+    --accent: var(--cyan);
+  }
+
+  .tool-card--orange {
+    --accent: var(--orange);
+  }
+
+  .tool-card--yellow {
+    --accent: var(--yellow);
   }
 
   a.tool-card:hover,
