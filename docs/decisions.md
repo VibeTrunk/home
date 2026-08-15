@@ -77,12 +77,16 @@ must be loosened** — the injected script will otherwise be blocked silently.
 Vercel auto-detects Astro; no `framework`, `buildCommand`, or `outputDirectory`
 is pinned in `vercel.json`. Only headers are configured there.
 
-Remaining manual steps, in order:
+Live at `vibetrunk.com` (apex is the canonical/Production domain; `www`
+307-redirects to it, matching the `site` value in `astro.config.mjs`).
 
-1. Push this repo to `VibeTrunk/home` and import it as a Vercel project.
-2. Add `vibetrunk.com` as a domain on that project (apex, not a subdomain).
-3. At Porkbun, point the apex record at Vercel as instructed by the domain
-   settings page, and let the `www` redirect fall out of Vercel's default.
+The web import wizard at vercel.com/new got stuck in a permanently-disabled
+Deploy button after the repo went private → public — no tooltip, no banner,
+scope already correct (App installed on the org with all-repository access).
+Root cause unconfirmed; worked around entirely via `vercel login` /
+`vercel link` / `vercel deploy --prod` over the CLI, which hit no permission
+issues at all. If a future tool repo's import hangs the same way, reach for
+the CLI first rather than re-debugging the wizard.
 
 Subdomains for individual tools are configured on *their own* Vercel projects,
 not this one.

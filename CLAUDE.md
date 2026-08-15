@@ -25,3 +25,13 @@ First planned tool: a **"Hitster for philosophy"** — a multiplayer game where 
 
 ## Working style
 This is partly a deliberate learning project in production-grade practices (architecture, security, maintainability), not just a quick hack — favor clear structure and documenting decisions in markdown as you go.
+
+## Agent safety
+
+Destructive shell commands (force-push, hard reset, recursive delete, etc.)
+are blocked by a PreToolUse hook regardless of what an agent decides — see
+AGENTS.md for the Codex-specific summary, and .claude/settings.json /
+.codex/rules/project.rules for the exact allow/deny lists. This pattern
+(.claude/, .codex/, AGENTS.md, gitleaks CI) is the template for every
+VibeTrunk-org repo — new repos should copy it and adapt only the
+stack-specific command lists.
