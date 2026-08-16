@@ -26,9 +26,10 @@ export type Tool =
 
 export const tools: Tool[] = [
   {
-    name: 'Hitster for Philosophy',
-    blurb: 'Place famous quotes on a timeline before anyone else does.',
-    status: 'coming-soon',
+    name: 'Cogitster',
+    blurb: 'Place philosophy on a timeline before anyone else does.',
+    url: 'https://cogitster.vibetrunk.com',
+    status: 'live',
   },
 ];
 

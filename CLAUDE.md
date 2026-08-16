@@ -19,9 +19,9 @@ Build a simple, single-page site for the root domain `vibetrunk.com` (not a subd
 - Deploy target: Vercel, mapped to the root `vibetrunk.com` domain (this repo, once pushed, gets imported into Vercel as its own project)
 
 ## Ecosystem — for context, not this repo's job
-Every future tool gets its **own repo** in the VibeTrunk GitHub org, deployed as its **own Vercel project**, on a subdomain of vibetrunk.com (e.g. `hitster.vibetrunk.com`). All tools will share **one Supabase project** (not one per tool) with a separate Postgres schema per tool, to stay under free-tier project limits and keep one bill.
+Every future tool gets its **own repo** in the VibeTrunk GitHub org, deployed as its **own Vercel project**, on a subdomain of vibetrunk.com (e.g. `cogitster.vibetrunk.com`). All tools will share **one Supabase project** (not one per tool) with a separate Postgres schema per tool, to stay under free-tier project limits and keep one bill.
 
-First planned tool: a **"Hitster for philosophy"** — a multiplayer game where players place famous philosophy quotes on a timeline in the correct order, modeled on the Dutch game Hitster (which does this with pop songs). It'll use Supabase Realtime for live sync between players. Once it's built, its boilerplate (Vercel config, Supabase client setup, env var pattern) gets extracted into a reusable template repo for future tools.
+First planned tool: **Cogitster** — a philosophy timeline game where players place quotes, thinkers, books, concepts, and events in the correct order. It includes solo play against AI and sequential-turn multiplayer, and will use Supabase Realtime for live sync. Once it is built, its boilerplate (Vercel config, Supabase client setup, env var pattern) gets extracted into a reusable template repo for future tools.
 
 ## Working style
 This is partly a deliberate learning project in production-grade practices (architecture, security, maintainability), not just a quick hack — favor clear structure and documenting decisions in markdown as you go.

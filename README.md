@@ -4,7 +4,7 @@ The landing page for [vibetrunk.com](https://vibetrunk.com): one static page tha
 lists every VibeTrunk tool as it ships.
 
 Each tool lives in its own repo and its own Vercel project on a subdomain
-(`hitster.vibetrunk.com`, and so on). This repo owns the root domain only, and
+(`cogitster.vibetrunk.com`, and so on). This repo owns the root domain only, and
 knows nothing about the tools beyond their name, blurb, and URL.
 
 ## Stack
@@ -20,9 +20,9 @@ changes when something ships:
 ```ts
 export const tools: Tool[] = [
   {
-    name: 'Hitster for Philosophy',
+    name: 'Cogitster',
     blurb: 'Place famous quotes on a timeline before anyone else does.',
-    url: 'https://hitster.vibetrunk.com',
+    url: 'https://cogitster.vibetrunk.com',
     status: 'live',
   },
 ];

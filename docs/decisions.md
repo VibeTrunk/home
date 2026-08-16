@@ -161,11 +161,34 @@ they're no longer needed, rather than leaving them stale on the remote.
 
 This whole structure — `.claude/`, `.codex/`, `AGENTS.md`, the gitleaks
 workflow, the `.env.example` pattern, `SECURITY.md` — is the template for
-every future VibeTrunk-org repo. The Hitster repo will need
-`supabase db push` / `supabase secrets set` guardrails added to the
-allow/deny lists, plus its own `.env.example`
-(`PUBLIC_SUPABASE_URL` / `PUBLIC_SUPABASE_ANON_KEY`; the `service_role` key
-never appears in any tracked file).
+every future VibeTrunk-org repo.
+
+## Cogitster split into its own repo
+
+Cogitster had been developed nested in this repo's `cogitster/` working-tree
+folder (untracked, `home`'s `tsconfig.json` excluded it from type-checking)
+while its Supabase backend and Vercel project were brought up. Once it went
+live at `cogitster.vibetrunk.com`, that arrangement stopped matching this
+repo's own stated architecture ("every future tool gets its own repo... own
+Vercel project"), so on 2026-08-16 the code was split out into
+[`VibeTrunk/cogitster`](https://github.com/VibeTrunk/cogitster).
+
+The template above was copied in and adapted: Supabase CLI's read-only/dry-run
+subcommands (`supabase migration list`, `supabase db push --dry-run`,
+`supabase functions deploy`) were added to the allow-list, but `supabase db
+push` (for real), `supabase db reset`, and `supabase secrets set` were
+deliberately left off it — they mutate the live schema or rotate live
+credentials for the one Supabase project every VibeTrunk tool shares, so
+each use should get a deliberate look rather than running unattended.
+
+The existing live Vercel project (`cogitster`, already serving the domain)
+was kept and reconnected to the new GitHub repo via `vercel git connect`
+rather than creating a second project. The `gitleaks.yml` workflow could not
+be pushed in the initial commit — the `gh` CLI's stored token only has
+`gist, read:org, repo` scope, and GitHub rejects an OAuth App pushing
+`.github/workflows/*` without the `workflow` scope. It needs
+`gh auth refresh -s workflow` (interactive) or adding the file by hand on
+github.com, then a follow-up push.
 
 ## Redesign: single dark world, sourced from the OG artwork
 
