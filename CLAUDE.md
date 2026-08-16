@@ -21,7 +21,9 @@ Build a simple, single-page site for the root domain `vibetrunk.com` (not a subd
 ## Ecosystem — for context, not this repo's job
 Every future tool gets its **own repo** in the VibeTrunk GitHub org, deployed as its **own Vercel project**, on a subdomain of vibetrunk.com (e.g. `cogitster.vibetrunk.com`). All tools will share **one Supabase project** (not one per tool) with a separate Postgres schema per tool, to stay under free-tier project limits and keep one bill.
 
-First planned tool: **Cogitster** — a philosophy timeline game where players place quotes, thinkers, books, concepts, and events in the correct order. It includes solo play against AI and sequential-turn multiplayer, and will use Supabase Realtime for live sync. Once it is built, its boilerplate (Vercel config, Supabase client setup, env var pattern) gets extracted into a reusable template repo for future tools.
+First tool: **Cogitster** — a philosophy timeline game where players place quotes, thinkers, books, concepts, and events in the correct order. It includes solo play against AI and sequential-turn multiplayer, and uses Supabase Realtime for live sync. It shipped its own repo (`VibeTrunk/cogitster`) on 2026-08-16.
+
+New tools no longer get scaffolded by cloning a template repo — that plan was superseded by the `vibetrunk-new-tool` Claude Code skill (`~/.claude/skills/vibetrunk-new-tool/`), which asks the setup questions (backend or not, framework, public/private) and adapts the scaffolding instead of leaving that to hand-editing a clone. See `docs/decisions.md`.
 
 ## Working style
 This is partly a deliberate learning project in production-grade practices (architecture, security, maintainability), not just a quick hack — favor clear structure and documenting decisions in markdown as you go.

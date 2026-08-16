@@ -237,6 +237,31 @@ client-side JavaScript, including the blinking terminal cursor (a CSS
 `steps()` animation, covered by the existing
 `prefers-reduced-motion` rule in `global.css`).
 
+## Template extraction became a skill, not a repo
+
+The original plan (see `CLAUDE.md`'s Ecosystem section, as first written)
+was to extract Cogitster's boilerplate into a standalone template repo once
+it shipped. That never happened as a repo — by the time Cogitster split out
+(above), its scaffolding had diverged from `home`'s in a few
+project-specific ways (Supabase CLI allow-list entries, `SECURITY.md`
+wording, an `.env.example`), and a static template repo would need
+hand-editing on every reuse to re-diverge correctly for the next tool
+anyway.
+
+Built `vibetrunk-new-tool` as a Claude Code skill instead
+(`~/.claude/skills/vibetrunk-new-tool/`), bundling genericized copies of the
+scaffold as its own templates. Chose this over a template repo because a
+skill can ask the questions that actually vary per tool (needs a backend?
+which framework? public or private?) and only apply the Supabase-specific
+allow-list additions when relevant, rather than shipping one fixed snapshot
+and trusting hand-edits to remove what doesn't apply.
+
+Traded away: this scaffold now lives only on the machine the skill was
+authored on (`~/.claude/skills/` isn't version-controlled), unlike a GitHub
+template repo which would be. Accepted for now since there's a single
+developer on a single machine; revisit (e.g. move the skill into a
+version-controlled dotfiles repo) if that stops being true.
+
 ## Open items
 
 - **No sitemap.** `@astrojs/sitemap` is not worth a dependency for one indexed
