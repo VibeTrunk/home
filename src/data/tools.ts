@@ -31,6 +31,11 @@ export const tools: Tool[] = [
     url: 'https://cogitster.vibetrunk.com',
     status: 'live',
   },
+  {
+    name: 'Kelderklasse Ultimate Team',
+    blurb: 'Collectible football cards for Kelderklasse — showing up matters as much as scoring.',
+    status: 'coming-soon',
+  },
 ];
 
 const statusOrder: Record<ToolStatus, number> = {
