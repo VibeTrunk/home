@@ -30,22 +30,13 @@ This is partly a deliberate learning project in production-grade practices (arch
 
 ## Agent safety
 
-Destructive shell commands (force-push, hard reset, recursive delete, etc.)
-are blocked by a PreToolUse hook regardless of what an agent decides — see
-AGENTS.md for the Codex-specific summary, and .claude/settings.json /
-.codex/rules/project.rules for the exact allow/deny lists. This pattern
+Standard VibeTrunk scaffold (see global CLAUDE.md's agent safety policy) —
+PreToolUse hooks block destructive commands and young (<14-day) npm
+packages; see AGENTS.md and .claude/settings.json /
+.codex/rules/project.rules for exact allow/deny lists. This pattern
 (.claude/, .codex/, AGENTS.md, gitleaks CI) is the template for every
 VibeTrunk-org repo — new repos should copy it and adapt only the
 stack-specific command lists.
-
-A second PreToolUse hook (`block-young-packages.cjs`, mirrored in
-`.claude/hooks/` and `.codex/hooks/`) blocks `npm install`/`npm i` of any
-package version published less than 14 days ago, checked live against the
-npm registry. Freshly published versions are a common supply-chain attack
-vector (typosquats, compromised maintainer accounts); the cool-off gives
-registry security teams time to catch and pull malicious releases before
-this project depends on them. It fails open (allows the install) if the
-registry is unreachable or the version can't be resolved unambiguously.
 
 ## Branch protection
 Branch protection on `main` was enabled 2026-08-23: PRs required before
