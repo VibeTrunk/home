@@ -46,3 +46,10 @@ vector (typosquats, compromised maintainer accounts); the cool-off gives
 registry security teams time to catch and pull malicious releases before
 this project depends on them. It fails open (allows the install) if the
 registry is unreachable or the version can't be resolved unambiguously.
+
+## Branch protection
+Branch protection on `main` was enabled 2026-08-23: PRs required before
+merge, direct pushes blocked (including for admins), squash-only merges,
+branches auto-delete on merge. No required review count or status checks
+(solo project). See the global `~/.claude/CLAUDE.md` "Branch workflow"
+section for the actual conventions (branch naming, PR flow, who merges).
