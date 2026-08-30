@@ -34,7 +34,8 @@ export const tools: Tool[] = [
   {
     name: 'Kelderklasse Ultimate Team',
     blurb: 'Collectible football cards for Kelderklasse — showing up matters as much as scoring.',
-    status: 'coming-soon',
+    url: 'https://kut.vibetrunk.com',
+    status: 'live',
   },
 ];
 
