@@ -32,9 +32,9 @@ export const tools: Tool[] = [
     status: 'live',
   },
   {
-    name: 'Kelderklasse Ultimate Team',
-    blurb: 'Collectible football cards for Kelderklasse — showing up matters as much as scoring.',
-    url: 'https://kut.vibetrunk.com',
+    name: 'FLUT',
+    blurb: 'Collectible football cards for TFH — showing up matters.',
+    url: 'https://flut.vibetrunk.com',
     status: 'live',
   },
 ];
